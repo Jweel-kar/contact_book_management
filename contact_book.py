@@ -1,32 +1,23 @@
-from utility import validate_name, validate_phone
 from backup_restore import backup_contacts, restore_contacts
 from backup_restore import all_contacts
 
 
 def add_contact():
-    contact_name = input("Enter contact's name: ")
-    contact_email = input("Enter contact's email: ")
-    contact_phone = int(input("Enter contact's phone number: "))
-    contact_address = input("Enter contact's address: ")
+    name = input("Enter name: ")
+    email = input("Enter email: ")
+    phone = int(input("Enter phone number: "))
+    address = input("Enter address: ")
 
     for contact in all_contacts:
-        if contact['contact_phone'] == contact_phone:
+        if contact['contact_phone'] == phone:
             print("Error: Phone number already exists, try with another one.")
             return
 
-    # if not validate_name(contact_name):
-    #     print("Error: Contact name should be string.")
-    #     return
-    #
-    # if not validate_phone(contact_phone):
-    #     print("Error: Contact's phone should be integer.")
-    #     return
-
     contact_book = {
-        'contact_name': contact_name,
-        'contact_email': contact_email,
-        'contact_phone': contact_phone,
-        'contact_address': contact_address
+        'contact_name': name,
+        'contact_email': email,
+        'contact_phone': phone,
+        'contact_address': address
     }
 
     all_contacts.append(contact_book)
@@ -55,9 +46,23 @@ def search_by_name():
         search_term = input('Enter contact name: ')
 
         for contact in all_contacts:
-            for name in contact['contact_name']:
-                if search_term.lower() in name.lower():
-                    print(f"Found: {contact['contact_name']} - {contact['contact_phone']}")
+            if search_term == contact['contact_name']:
+                print(f"Found: {contact['contact_name']} - {contact['contact_phone']}")
+
+        else:
+            print('No such contact available!')
+
+    except:
+        print('No such contact available!')
+
+
+def search_by_phone():
+    try:
+        search_term = input('Enter contact phone: ')
+
+        for contact in all_contacts:
+            if search_term == contact['contact_phone']:
+                print(f"Found: {contact['contact_name']} - {contact['contact_phone']}")
 
         else:
             print('No such contact available!')
@@ -86,7 +91,9 @@ menu_text = """
 Your options:
 1. Add contact
 2. View all contact
-3. Remove contact
+3. Search by name
+4. Search by phone
+5. Remove contact
 0. Exit
 """
 
@@ -106,6 +113,12 @@ def main_menu():
             view_all_contact()
 
         elif choice == '3':
+            search_by_name()
+
+        elif choice == '4':
+            search_by_phone()
+
+        elif choice == '5':
             remove_contact()
 
         elif choice == '0':
